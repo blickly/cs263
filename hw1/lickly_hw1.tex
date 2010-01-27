@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{amsmath}
+\title{CS263: HW \#1}
+\author{Ben Lickly}
+\date{February 2, 2010}
+
+\begin{document}
+\maketitle
+\begin{enumerate}
+  \item Comment on some aspect from Hoare's papers ``Hints on
+  programming-language design'' that relates to your programming experience. Try
+  to provide additional evidence in favor of one his points and against one of
+  his points. A couple of paragraphs should be enough.
+  
+  
+  \item Let $X$ and $Y$ be sets. Show that there is a 1-1 correspondence bewteen
+  the sets $X \rightarrow P(Y)$ and $P(X \times Y )$. This correspondence will
+  allow us to use functional notation for certain sets.
+  
+  Let $S \in P(X \times Y)$. i.e. $S$ is an arbitrary set that contains elements
+  of the form $(x,y)$, where $x \in X$ and $y \in Y$.  Note that this set
+  defines a partial function from $f : X \rightarrow P(Y)$, by the following
+  construction:
+  \[
+  f(x) = \{ y : (x,y) \in S \}
+  \]
+  Note that in the case that there is no $y$ for which $(x,y) \in S$, this
+  simply means that $f(x) = \emptyset$.
+  
+  \item Division?
+  
+  \item Extend the operational semantics of the IMP language with a ``do c
+  until(e)'' construct. Show the extension both for the big-step semantics and
+  for the contextual small-step semantics.
+  \newcommand{\dountil}[2]{\operatorname{do} #1 \operatorname{until}(#2)}
+  
+  Big-step semantics:
+  \[\frac{
+  \langle c, \sigma \rangle \Downarrow \sigma'   \qquad
+  \langle e, \sigma' \rangle \Downarrow true }
+  % --------------------------------------
+  {\langle \dountil{c}{e}, \sigma \rangle \Downarrow \sigma'}
+  \]
+
+  \[\frac{
+  \langle c, \sigma \rangle \Downarrow \sigma'   \quad
+  \langle e, \sigma' \rangle \Downarrow false    \quad
+  \langle \dountil{c}{e}, \sigma' \rangle \Downarrow \sigma'' }
+  % --------------------------------------
+  {\langle \dountil{c}{e}, \sigma \rangle \Downarrow \sigma'' }
+  \]
+
+  \item Consider the IMP language with a new command construct ``let x = e in
+  c''.
+  \newcommand{\letin}[2]{\operatorname{let} x = #1 \operatorname{in} #2}
+  
+Big-step semantics:
+  \[\frac{
+  \langle e, \sigma \rangle \Downarrow n    \qquad
+  \langle c, \sigma[x \rightarrow n] \rangle \Downarrow \sigma' }
+  % --------------------------------------
+  {\langle \letin{e}{c}, \sigma \rangle \Downarrow
+          \sigma'[x \rightarrow \sigma(x)]}
+  \]
+\end{enumerate}
+\end{document}
+
