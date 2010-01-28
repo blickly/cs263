@@ -27,12 +27,24 @@
   Note that in the case that there is no $y$ for which $(x,y) \in S$, this
   simply means that $f(x) = \emptyset$.
   
-  \item Division?
+  \item Consider the IMP language discussed in class, with the expression
+  sub-language extended with a division operator. Explain what changes must be
+  made to the operational semantics (big-step only).
+  
+  An additional rule would need to be added for division:
+  \[\frac{
+  \langle e_1, \sigma \rangle \Downarrow n_1   \qquad
+  \langle e_2, \sigma' \rangle \Downarrow n_2  \qquad
+  n_2 \ne 0 }
+  % --------------------------------------
+  {\langle e_1 / e_2, \sigma \rangle \Downarrow n_1 / n_2}
+  \]
   
   \item Extend the operational semantics of the IMP language with a ``do c
   until(e)'' construct. Show the extension both for the big-step semantics and
   for the contextual small-step semantics.
   \newcommand{\dountil}[2]{\operatorname{do} #1 \operatorname{until}(#2)}
+  \newcommand{\ifthenelse}[3]{\operatorname{if} #1 \operatorname{then} #2 \operatorname{else} #3}
   
   Big-step semantics:
   \[\frac{
@@ -50,10 +62,20 @@
   {\langle \dountil{c}{e}, \sigma \rangle \Downarrow \sigma'' }
   \]
 
+  Small-step semantics:
+
+  As a new redex, we need:
+  \[
+  \langle \dountil{c}{e}, \sigma \rangle \rightarrow
+          \langle \ifthenelse{e}{c}{c;\dountil{c}{e}}, \sigma \rangle
+  \]
+  No additional contexts are needed.
+
+
   \item Consider the IMP language with a new command construct ``let x = e in
   c''.
   \newcommand{\letin}[2]{\operatorname{let} x = #1 \operatorname{in} #2}
-  
+
 Big-step semantics:
   \[\frac{
   \langle e, \sigma \rangle \Downarrow n    \qquad
@@ -61,6 +83,19 @@ Big-step semantics:
   % --------------------------------------
   {\langle \letin{e}{c}, \sigma \rangle \Downarrow
           \sigma'[x \rightarrow \sigma(x)]}
+  \]
+
+Small-step semantics:
+
+  As a new redex, we need:
+  \[
+  \langle \letin{n}{c}, \sigma \rangle \rightarrow
+      \langle c; x:= \sigma(x), \sigma[x \rightarrow n] \rangle
+  \]
+
+  As a new context, we need:
+  \[
+    \letin{H}{c}
   \]
 \end{enumerate}
 \end{document}
