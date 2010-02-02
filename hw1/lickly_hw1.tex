@@ -11,8 +11,39 @@
   programming-language design'' that relates to your programming experience. Try
   to provide additional evidence in favor of one his points and against one of
   his points. A couple of paragraphs should be enough.
-  
-  
+
+In the security section, I found it strange that Hoare claimed that the ``it is
+impossible to guarantee that [standard and optimizing compilers] will give the
+same results." This seems completely off base today, where compiler optimizations
+that do not guarantee the same results are considered erroneous.  Hoare's peice
+paints a picture of compiler's whose optimization settings try various syntactic
+simplifications, with no respect for program semantics.
+
+Hoare's dismissal of independent compilation seems equally quaint.  His
+complaints obviously come from a time when computer resources were much more
+restricted, but the conclusions he comes to about avoiding independent
+compilation seem very out of touch with today's multi-million LOC systems. It
+seems that linkers of his day didn't check that the types of the functions that
+they were linking together matched.  He takes this as an indictment of
+independent compilation in general, which seems crazy by today's standards.
+
+The commenting conventions in ALGOL60 seem absolutely horrible.  It's a good
+thing that the PL community listened to Hoare about the importance of newline
+terminated comments.  I can only imagine what a pain it would be to debug a
+program that compiles without complaint even when missing a semicolon.
+
+I don't quite understand his point (3) in the procedures and parameters section:
+\begin{quote}
+  The ability to define side effects of function calls negates many of the
+  advantages of arithmetic expressions.
+\end{quote}  
+Since he already made a case for logical separation of a program into its
+procedures, I would have assumed that Hoare was OK with side-effecting functions.
+ Someone today could certainly use the same line of reasoning to advocate pure
+functional programming, but taken with Hoare's focus on efficiency, this doesn't
+make sense. It feels like he has overlooked how his statement here about side
+effects conflicts with his other aims at having maximal efficiency.
+
   \item Let $X$ and $Y$ be sets. Show that there is a 1-1 correspondence bewteen
   the sets $X \rightarrow P(Y)$ and $P(X \times Y )$. This correspondence will
   allow us to use functional notation for certain sets.
