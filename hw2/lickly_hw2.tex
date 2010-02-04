@@ -1,0 +1,41 @@
+\documentclass{article}
+\usepackage{amsmath}
+\title{CS263: HW \#2}
+\author{Ben Lickly}
+\date{February 11, 2010}
+
+\newcommand{\problem}[1]
+{\subsubsection*{} %\fbox{\parbox{\textwidth}{
+\vspace{-16pt} \section{} \vspace{-22pt} \qquad
+#1%}}
+\bigskip \bigskip
+}
+
+\begin{document}
+\maketitle
+\problem{
+What was the bug in the proof that well-founded induction is a sound
+reasoning principle (lecture 3, slide 12)?
+}
+
+  The statement ``If $y \prec x$ then $y \in D_n$'' is not always true. Since the
+  $D_n$ levels are organized by the \emph{longest} descending chain, then it
+  could be the case that $y \in D_i$ for some $i < n$.
+  
+\problem{
+Prove by induction the following statement about the operational semantics:
+
+\newcommand{\while}[2]{\operatorname{while}\, #1\ \operatorname{do}\ #2}
+
+For any boolean command $b$ and any initial state $\sigma$ such that $\sigma(x)$
+is even, if $\langle \while{b}{x := x + 2}, \sigma \rangle \Downarrow \sigma'$
+then $\sigma'(x)$ is even. Make sure you state what you induct on, what is the
+base case and what are the inductive cases. Show representative cases among
+the latter. Do not do a proof by mathematical induction!
+}
+
+By structural induction on the strucutre of the proof:
+
+
+\end{document}
+
