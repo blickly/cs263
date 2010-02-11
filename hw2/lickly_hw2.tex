@@ -34,8 +34,25 @@ base case and what are the inductive cases. Show representative cases among
 the latter. Do not do a proof by mathematical induction!
 }
 
+Want to prove:
+\[
+\forall \sigma : \sigma(x) even, \langle \while{b}{x := x + 2}, \sigma
+\rangle \Downarrow \sigma' \implies \sigma'(x) even
+\]
+
 By structural induction on the strucutre of the proof:
 
+The hardest case is the while case for which the $b$ is true:
+\[
+D :: \frac{
+D_1 :: \langle b, \sigma \rangle \downarrow true
+\qquad
+\langle c, \sigma \rangle \downarrow \sigma_1
+\qquad
+D_3 :: \langle \while{b}{c}, \sigma_1 \rangle \downarrow \sigma'
+}{
+\langle \while{b}{c}, \sigma \rangle \downarrow \sigma'
+}
+\]
 
 \end{document}
-
