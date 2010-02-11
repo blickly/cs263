@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{amsmath}
+\usepackage{fullpage}
 \title{CS263: HW \#2}
 \author{Ben Lickly}
 \date{February 11, 2010}
@@ -36,23 +37,43 @@ the latter. Do not do a proof by mathematical induction!
 
 Want to prove:
 \[
-\forall \sigma : \sigma(x) even, \langle \while{b}{x := x + 2}, \sigma
-\rangle \Downarrow \sigma' \implies \sigma'(x) even
+\forall \sigma : \sigma(x) = 2k, \langle \while{b}{x := x + 2}, \sigma
+\rangle \Downarrow \sigma' \implies \sigma'(x) = 2k'
 \]
 
-By structural induction on the strucutre of the proof:
+By structural induction on the strucutre of the proof.
 
-The hardest case is the while case for which the $b$ is true:
+\newcommand{\skp}{\operatorname{skip}}
+The base cases are when there is no subproof, such as with the $skip$ command:
 \[
-D :: \frac{
-D_1 :: \langle b, \sigma \rangle \downarrow true
-\qquad
-\langle c, \sigma \rangle \downarrow \sigma_1
-\qquad
-D_3 :: \langle \while{b}{c}, \sigma_1 \rangle \downarrow \sigma'
-}{
-\langle \while{b}{c}, \sigma \rangle \downarrow \sigma'
+D :: \frac{\sigma(x) = 2k}{
+\langle \skp, \sigma \rangle \downarrow \sigma
 }
 \]
+
+Or for the assignment command:
+\[
+D :: \frac{\sigma(x) = 2k}{
+\langle x := x+2, \sigma \rangle \downarrow \sigma[x := 2k']
+}
+\]
+
+The inductive cases are when the derivation depends on a subderivation.
+To save space, I'll let $c$ be short for $x := x + 2$.
+The most interesting inductive case is the while case for which the $b$ is true:
+\begin{align*}
+D :: \frac{
+\sigma(x) = 2k
+\qquad
+D_1 :: \langle b, \sigma \rangle \downarrow true
+\qquad
+D_2 :: \langle c, \sigma \rangle \downarrow \sigma[x := 2k']
+\qquad
+D_3 :: \langle \while{b}{c}, \sigma[x := 2k'] \rangle \downarrow \sigma[x :=
+2k''] }{
+\langle \while{b}{c}, \sigma \rangle \downarrow \sigma[x := 2k'']
+}
+\end{align*}
+
 
 \end{document}
