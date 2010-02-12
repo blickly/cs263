@@ -1,0 +1,49 @@
+\documentclass{article}
+\usepackage{amsmath}
+%\usepackage{fullpage}
+\usepackage{stmaryrd}
+
+\title{CS263: HW \#3}
+\author{Ben Lickly}
+\date{February 16, 2010}
+
+\newcommand{\problem}[1]
+{\subsubsection*{} %\fbox{\parbox{\textwidth}{
+\vspace{-16pt} \section{} \vspace{-22pt} \qquad
+#1%}}
+\bigskip \bigskip
+}
+
+\newcommand{\while}[2]{\operatorname{while}\, #1\ \operatorname{do}\ #2}
+
+\begin{document}
+\maketitle
+\problem{
+Prove the following statement. For any boolean command $b$ and any initial state
+$\sigma$ such that $\sigma(x)$ is even, if $\llbracket \while{b}{x := x + 2}
+\rrbracket \sigma = \sigma'$ and if $\sigma = \bot$ then $\sigma'(x)$ is even.
+Unlike in previous assignment, this time you should use denotational semantics
+for the proof.
+}
+  
+\problem{
+Recall that we obtained the least fixed point of a monotone
+and continuous function $F : D \to D$ by starting with $\bot = F^0(\bot)$ and
+repeatedly applying $F$ to the result. Let's explore what happens if we do not
+start with $\bot$ but with some other element $x \in D$.
+\begin{enumerate}
+  \item What is a necessary and sufficient condition for the sequence $F^i(x)$
+  to be a chain, that is $x \sqsubseteq F(x) \sqsubseteq F^2 (x) \ldots$ ?
+
+  \item Prove that if the condition above holds then $\bigsqcup_i F^i (x)$ is a
+  fixed-point and furthermore it is the least of all fixed-points that are
+  $\sqsupseteq$ than $x$.
+
+  \item Find a necessary and sufficient condition for the $\bigsqcup_i F^i (x)$ to be
+the overall least-fixed point.
+\end{enumerate}
+}
+
+
+
+\end{document}
