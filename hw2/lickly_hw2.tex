@@ -64,11 +64,11 @@ The most interesting inductive case is the while case for which the $b$ is true:
 \begin{align*}
 D :: \frac{
 \sigma(x) = 2k
-\qquad
+\ %\qquad
 D_1 :: \langle b, \sigma \rangle \downarrow true
-\qquad
+\ %\qquad
 D_2 :: \langle c, \sigma \rangle \downarrow \sigma[x := 2k']
-\qquad
+\ %\qquad
 D_3 :: \langle \while{b}{c}, \sigma[x := 2k'] \rangle \downarrow \sigma[x :=
 2k''] }{
 \langle \while{b}{c}, \sigma \rangle \downarrow \sigma[x := 2k'']
