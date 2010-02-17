@@ -15,17 +15,36 @@
 }
 
 \newcommand{\while}[2]{\operatorname{while}\, #1\ \operatorname{do}\ #2}
+\newcommand{\ifthen}[3]{\operatorname{if}\, #1
+\ \operatorname{then}\#2\ \operatorname{else}\ #3}
+\newcommand{\denote}[1]{\llbracket #1 \rrbracket}
 
 \begin{document}
 \maketitle
 \problem{
 Prove the following statement. For any boolean command $b$ and any initial state
-$\sigma$ such that $\sigma(x)$ is even, if $\llbracket \while{b}{x := x + 2}
-\rrbracket \sigma = \sigma'$ and if $\sigma = \bot$ then $\sigma'(x)$ is even.
-Unlike in previous assignment, this time you should use denotational semantics
+$\sigma$ such that $\sigma(x)$ is even, if $\denote{\while{b}{x := x + 2}}
+\sigma = \sigma'$ and if $\sigma = \bot$ then $\sigma'(x)$ is even. Unlike in previous assignment, this time you should use denotational semantics
 for the proof.
 }
-  
+
+Let $w = \while{b}{x := x +1}$ and $W = \denote{w}.$
+
+Case: the rule at the root is while-false
+\[
+W(\sigma) = \begin{cases}
+            \bot    &\text{if } \forall k, W_k(\sigma) = \bot \\
+            \sigma' &\text{if } W_k(\sigma) = \sigma' \ne \bot
+            \end{cases}
+\]
+\[
+W_k(\sigma) = \ifthen{\denote{b}\sigma}{W_{k-1}(\denote{c}\sigma)}{\sigma}
+\]
+\[
+W(\sigma) = \ifthen{\denote{b}\sigma}{W(\denote{c}\sigma)}{\sigma}
+\]
+
+
 \problem{
 Recall that we obtained the least fixed point of a monotone
 and continuous function $F : D \to D$ by starting with $\bot = F^0(\bot)$ and
