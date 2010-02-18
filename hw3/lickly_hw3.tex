@@ -105,8 +105,9 @@ W(\sigma) = \begin{cases}
 \[
 W_k(\sigma) =
 \begin{cases}
-\bot & \text{if } k = 0 \\
-\ifthen{\denote{b}\sigma}{W_{k-1}(\denote{c}\sigma)}{\sigma} &\text{otherwise}
+\sigma' & \text{if $w$ in state $\sigma$ terminates in state $\sigma'$ in fewer
+than $k$ iterations} \\
+\bot &\text{otherwise}
 \end{cases}
 \]
 
@@ -126,12 +127,15 @@ $\forall k, W_k(\sigma) = \bot$ ), or it terminates after some finite number of
 iterations (i.e. $\exists k, W_k(\sigma) = \sigma' \ne \bot$).
 
 Case 2a: $\forall k, W_k(\sigma) = \bot$ \\
-This means that $W(\sigma) = \bot$.  It also must be the case that
-$W(\denote{c}\sigma) = \bot$, for if $W(\denote{c}\sigma) =
-W_{k'}(\denote{c}\sigma) \ne \bot$, this would mean that $W(\sigma) =
-W_{k'+1}(\sigma)$.
+This means that $W(\sigma) = \bot$.
+If $W(\denote{c}\sigma) = W_{k'}(\denote{c}\sigma) \ne \bot$, this would mean
+that $W(\sigma)$ is also defined (by, for example $W_{k'+1}(\sigma)$).
+Thus, it must also be the case that
+$W(\denote{c}\sigma) = \bot$.
 
 Case 2b: $\exists k, W_k(\sigma) = \sigma' \ne \bot$ \\
-In this case, $W(\sigma) = W_k(\sigma)$.
+In this case, $W(\sigma) = W_k(\sigma)$.  After performing one iteration of
+$c$, there will only be $k-1$ iterations remaining, so $W_k(\sigma) =
+W_{k-1}(\denote{c}\sigma)$. This must be equal to $W(\denote{c}\sigma)$.
 
 \end{document}
