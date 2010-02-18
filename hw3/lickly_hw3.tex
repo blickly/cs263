@@ -87,23 +87,51 @@ Thus, we can use our induction hypothesis to conclude that if $\sigma' \ne \bot$
 then $\sigma'(x)$ is even, finishing our induction step.
 
 \problem{
-Recall that we obtained the least fixed point of a monotone
-and continuous function $F : D \to D$ by starting with $\bot = F^0(\bot)$ and
-repeatedly applying $F$ to the result. Let's explore what happens if we do not
-start with $\bot$ but with some other element $x \in D$.
-\begin{enumerate}
-  \item What is a necessary and sufficient condition for the sequence $F^i(x)$
-  to be a chain, that is $x \sqsubseteq F(x) \sqsubseteq F^2 (x) \ldots$ ?
-
-  \item Prove that if the condition above holds then $\bigsqcup_i F^i (x)$ is a
-  fixed-point and furthermore it is the least of all fixed-points that are
-  $\sqsupseteq$ than $x$.
-
-  \item Find a necessary and sufficient condition for the $\bigsqcup_i F^i (x)$ to be
-the overall least-fixed point.
-\end{enumerate}
+In this exercise you will prove using denotational semantics that the command
+``$\while{b}{c}$'' is equivalent to ``$\ifthen{b}{c;\while{b}{c}}{skip}$''.
+Essentially this means that you have to prove that the denotational semantic
+function for while (slide 14 in the lecture) does satisfy the unwinding equation
+for any state initial state.
 }
 
+Our denational definition of $\while{b}{c}$ is given as follows:
+\[
+W(\sigma) = \begin{cases}
+            \bot    &\text{if } \forall k, W_k(\sigma) = \bot \\
+            \sigma' &\text{if $k$ smallest such that } W_k(\sigma) = \sigma' \ne
+            \bot
+            \end{cases}
+\]
+\[
+W_k(\sigma) =
+\begin{cases}
+\bot & \text{if } k = 0 \\
+\ifthen{\denote{b}\sigma}{W_{k-1}(\denote{c}\sigma)}{\sigma} &\text{otherwise}
+\end{cases}
+\]
 
+We want to prove that $W(\sigma) =
+\ifthen{B\denote{b}\sigma}{W(\denote{c}\sigma)}{\sigma}$ for all initial states
+$\sigma$. We will prove this in two cases, depending on the truth value of
+$B\denote{b}\sigma$.
+
+Case 1: $B\denote{b}\sigma$ false \\
+In this case we know that $W(\sigma) = W_1(\sigma) = \sigma \ne \bot$.
+Simplifiying the right hand side also gives us $\sigma$.
+
+Case 2:  $B\denote{b}\sigma$ true \\
+In this case, the right hand side simplifies to $W(\denote{c}\sigma)$.
+Here, there are two sub-cases: either the while loop never terminates (i.e.
+$\forall k, W_k(\sigma) = \bot$ ), or it terminates after some finite number of
+iterations (i.e. $\exists k, W_k(\sigma) = \sigma' \ne \bot$).
+
+Case 2a: $\forall k, W_k(\sigma) = \bot$ \\
+This means that $W(\sigma) = \bot$.  It also must be the case that
+$W(\denote{c}\sigma) = \bot$, for if $W(\denote{c}\sigma) =
+W_{k'}(\denote{c}\sigma) \ne \bot$, this would mean that $W(\sigma) =
+W_{k'+1}(\sigma)$.
+
+Case 2b: $\exists k, W_k(\sigma) = \sigma' \ne \bot$ \\
+In this case, $W(\sigma) = W_k(\sigma)$.
 
 \end{document}
