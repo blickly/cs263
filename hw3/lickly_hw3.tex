@@ -16,7 +16,7 @@
 
 \newcommand{\while}[2]{\operatorname{while}\, #1\ \operatorname{do}\ #2}
 \newcommand{\ifthen}[3]{\operatorname{if}\, #1
-\ \operatorname{then}\#2\ \operatorname{else}\ #3}
+\ \operatorname{then}\ #2\ \operatorname{else}\ #3}
 \newcommand{\denote}[1]{\llbracket #1 \rrbracket}
 
 \begin{document}
@@ -24,13 +24,36 @@
 \problem{
 Prove the following statement. For any boolean command $b$ and any initial state
 $\sigma$ such that $\sigma(x)$ is even, if $\denote{\while{b}{x := x + 2}}
-\sigma = \sigma'$ and if $\sigma = \bot$ then $\sigma'(x)$ is even. Unlike in previous assignment, this time you should use denotational semantics
-for the proof.
+\sigma = \sigma'$ and if $\sigma' \ne \bot$ then $\sigma'(x)$ is even. Unlike in
+previous assignment, this time you should use denotational semantics for the proof.
 }
 
-Let $w = \while{b}{x := x +1}$ and $W = \denote{w}.$
+Let $w = \while{b}{x := x +2}$ and $W = \denote{w}$.
+%
+Thus, we are given the following:
+\begin{itemize}
+  \item $\exists n,\ \sigma(x) = 2n$
+  \item $W(\sigma) = \sigma'$
+  \item $\sigma' \ne \bot$
+\end{itemize}
+From these, we want to prove that
+\[
+\exists n',\ \sigma'(x) = 2n'
+\]
 
+\iffalse
 Case: the rule at the root is while-false
+
+\[
+W_k(\sigma) = \ifthen{\denote{b}\sigma}{W_{k-1}(\denote{c}\sigma)}{\sigma}
+\]
+\[
+W(\sigma) = \ifthen{\denote{b}\sigma}{W(\denote{c}\sigma)}{\sigma}
+\]
+\fi
+
+The most intesesting case is that for which $B\denote{b}\sigma$ is true.
+In this case, we will need to rely on our definition of $W$ and $W_k$:
 \[
 W(\sigma) = \begin{cases}
             \bot    &\text{if } \forall k, W_k(\sigma) = \bot \\
@@ -38,12 +61,30 @@ W(\sigma) = \begin{cases}
             \end{cases}
 \]
 \[
-W_k(\sigma) = \ifthen{\denote{b}\sigma}{W_{k-1}(\denote{c}\sigma)}{\sigma}
+W_k(\sigma) =
+\begin{cases}
+\bot & \text{if } k = 0 \\
+\ifthen{\denote{b}\sigma}{W_{k-1}(\denote{c}\sigma)}{\sigma} &\text{otherwise}
+\end{cases}
 \]
-\[
-W(\sigma) = \ifthen{\denote{b}\sigma}{W(\denote{c}\sigma)}{\sigma}
-\]
+Here we note that in all the cases for which $W(\sigma) \ne \bot$, there exists
+a $k$ for which $W = W_k$.  We will now do mathematical induction on $k$.
 
+Base case: Since $W_0 = \bot$ it does not satisfy our proof assumptions.
+The simplest interesting case is $W_1$.  The only case for which $W_1(\sigma) =
+\sigma' \ne \bot$ is if $B\denote{b}\sigma$ is false.  Then we have that
+$\sigma' = \sigma$, and we can finish our proof by simply setting $n'$ to $n$.
+
+Inductive case:
+Assume that we have proved all our theorem for $W_{k-1}$ with $k > 1$.  If
+$B\denote{b}\sigma$ were false, we would be done, so the only interesting case
+is when $B\denote{b}\sigma$ is true.
+We want to prove that for $\sigma' = W_k(\sigma)$, if $\sigma' \ne
+\bot$ then $\sigma'(x)$ is eve. In this case, we know that $W_k(\sigma) =
+W_{k-1}(\denote{c}\sigma) = W_{k-1}(\sigma[x := x + 2])$.
+Clearly, since $\sigma(x)$ is even, so is $\sigma[x := x + 2](x)$.
+Thus, we can use our induction hypothesis to conclude that if $\sigma' \ne \bot$
+then $\sigma'(x)$ is even, finishing our induction step.
 
 \problem{
 Recall that we obtained the least fixed point of a monotone
