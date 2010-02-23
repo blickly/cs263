@@ -48,13 +48,22 @@ the old rule for while can be written with this rule instead.
 This rule is not complete. Give a counterexample and a short justification.
 }
 
+\[\axiomatic{true}{\while{true}{skip}}{false}\] is not provable with this rule. 
+This is because this fact relies on $true$ never being false, which normally
+gives us a much stronger post-condidition.  We have lost this here by removing
+the $\neg b$ from the final post-condidition.
+
 \problem{Consider now another Hoare rule for $while$:
 \[
 \frac{\proves \axiomatic{A}{c}{A}}
 {\proves \axiomatic{A}{\while{b}{c}}{A \wedge \neg b}}
 \]
-This rule is also incomplete. Give a counterexample and a short justifi-
-cation.
+This rule is also incomplete. Give a counterexample and a short justification.
 }
+
+\[\axiomatic{x=0}{\while{false}{x:=x+1}}{x=0}\] is not provable with this rule.
+This is because it requires too much of its proof of $c$.  It requires that 
+$A$ never be changed by $c$, whereas it really only matters when $b$ is also
+true.
 
 \end{document}
