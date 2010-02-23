@@ -17,7 +17,44 @@
 \newcommand{\while}[2]{\operatorname{while}\, #1\ \operatorname{do}\ #2}
 \newcommand{\ifthen}[3]{\operatorname{if}\, #1\ \operatorname{then}\ #2\ \operatorname{else}\ #3}
 \newcommand{\denote}[1]{\llbracket #1 \rrbracket}
+\newcommand{\proves}{\vdash}
+\newcommand{\axiomatic}[3]{\{#1\}\ #2\ \{#3\}}
 
 \begin{document}
 \maketitle
+
+\problem{
+Prove using Hoare rules the following property: For any boolean
+command $b$, if we start the command $\while{b}{x := x + 2}$ in a state in
+which $x$ is even, and if the command terminates, it terminates in a state in
+which $x$ is even.
+}
+
+\problem{Consider the following alternate Hoare rule for $while$:
+\[
+\frac{\proves \axiomatic{A}{c}{b \implies A \wedge \neg b \implies B}}
+{\proves \axiomatic{b \implies A \wedge \neg b \implies B}{\while{b}{c}}{B}}
+\]
+    Show that the system of axioms remains complete if we replace the old
+rule for while with this one. You must show that any derivation that uses
+the old rule for while can be written with this rule instead.
+}
+
+\problem{Consider the following alternate Hoare rule for $while$:
+\[
+\frac{\proves \axiomatic{A \wedge b}{c}{A}}
+{\proves \axiomatic{A}{\while{b}{c}}{A}}
+\]
+This rule is not complete. Give a counterexample and a short justification.
+}
+
+\problem{Consider now another Hoare rule for $while$:
+\[
+\frac{\proves \axiomatic{A}{c}{A}}
+{\proves \axiomatic{A}{\while{b}{c}}{A \wedge \neg b}}
+\]
+This rule is also incomplete. Give a counterexample and a short justifi-
+cation.
+}
+
 \end{document}
