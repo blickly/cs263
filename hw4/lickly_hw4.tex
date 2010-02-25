@@ -1,0 +1,100 @@
+\documentclass{article}
+\usepackage{amsmath}
+%\usepackage{fullpage}
+\usepackage{stmaryrd}
+
+\title{CS263: HW \#4}
+\author{Ben Lickly}
+\date{February 26, 2010}
+
+\newcommand{\problem}[1]
+{\subsubsection*{} %\fbox{\parbox{\textwidth}{
+\vspace{-16pt} \section{} \vspace{-22pt} \qquad
+#1%}}
+\bigskip \bigskip
+}
+
+\newcommand{\while}[2]{\operatorname{while}\, #1\ \operatorname{do}\ #2}
+\newcommand{\ifthen}[3]{\operatorname{if}\, #1\ \operatorname{then}\ #2\ \operatorname{else}\ #3}
+\newcommand{\denote}[1]{\llbracket #1 \rrbracket}
+\newcommand{\proves}{\vdash}
+\newcommand{\axiomatic}[3]{\{#1\}\ #2\ \{#3\}}
+
+\begin{document}
+\maketitle
+
+\problem{
+Prove using Hoare rules the following property: For any boolean
+command $b$, if we start the command $\while{b}{x := x + 2}$ in a state in
+which $x$ is even, and if the command terminates, it terminates in a state in
+which $x$ is even.
+}
+First, we want to prove that incrementing $x$ by 2 will maintain its evenness.
+We will start with the Hoare rule for assigment:
+\[
+\frac{ }
+{\proves \axiomatic{A[E/x]}{x := x + 2}{A}}
+\]
+Here, we will use $\exists k, 2k = x$ for $A$
+and $x+2$ for $E$, giving us:
+\[
+\proves \axiomatic{\exists k, 2k = x + 2}{x := x + 2}{\exists k, 2k = x}
+\]
+We can simplify the precondition, noting that if there exists a $k$ for which
+$2k = x +2$, then there also exists a $k'$ (namely $k-1$) for which $2k' = 2$.
+Renaming $k'$ to $k$, we get just:
+\[
+\proves \axiomatic{\exists k, 2k = x}{x := x + 2}{\exists k, 2k = x}
+\]
+From now on, we will refer to $\exists k, 2k = x$ as just $Even$.
+We can use the rule of consequence to derive
+\[
+\proves \axiomatic{Even \wedge b}{x := x + 2}{Even}
+\]
+We will now use the rule for while:
+\[
+\frac{\proves \axiomatic{A \wedge b}{c}{A}}
+{\proves \axiomatic{A}{\while{b}{c}}{A \wedge \neg b}}
+\]
+Here, we will use $A = Even$ again, to derive $Even \wedge \neg b$.
+Finally, we can use the rule of consequence one more time to derive $Even$.
+
+\problem{Consider the following alternate Hoare rule for $while$:
+\[
+\frac{\proves \axiomatic{A}{c}{b \implies A \wedge \neg b \implies B}}
+{\proves \axiomatic{b \implies A \wedge \neg b \implies B}{\while{b}{c}}{B}}
+\]
+    Show that the system of axioms remains complete if we replace the old
+rule for while with this one. You must show that any derivation that uses
+the old rule for while can be written with this rule instead.
+}
+
+
+
+\problem{Consider the following alternate Hoare rule for $while$:
+\[
+\frac{\proves \axiomatic{A \wedge b}{c}{A}}
+{\proves \axiomatic{A}{\while{b}{c}}{A}}
+\]
+This rule is not complete. Give a counterexample and a short justification.
+}
+
+\[\axiomatic{true}{\while{true}{skip}}{false}\] is not provable with this rule. 
+This is because this fact relies on $true$ never being false, which normally
+gives us a much stronger post-condidition.  We have lost this here by removing
+the $\neg b$ from the final post-condidition.
+
+\problem{Consider now another Hoare rule for $while$:
+\[
+\frac{\proves \axiomatic{A}{c}{A}}
+{\proves \axiomatic{A}{\while{b}{c}}{A \wedge \neg b}}
+\]
+This rule is also incomplete. Give a counterexample and a short justification.
+}
+
+\[\axiomatic{x=0}{\while{false}{x:=x+1}}{x=0}\] is not provable with this rule.
+This is because it requires too much of its proof of $c$.  It requires that 
+$A$ never be changed by $c$, whereas it really only matters when $b$ is also
+true.
+
+\end{document}
