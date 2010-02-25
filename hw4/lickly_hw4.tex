@@ -69,9 +69,51 @@ rule for while with this one. You must show that any derivation that uses
 the old rule for while can be written with this rule instead.
 }
 
+New rule:
+\[
+\frac{\proves \axiomatic{A'}{c}{b \implies A' \wedge \neg b \implies B'}}
+{\proves \axiomatic{b \implies A' \wedge \neg b \implies B'}{\while{b}{c}}{B'}}
+\]
+
+Now let $A' = A \wedge b$ and $B' = A \wedge \neg b$.
+This gives us
+\[
+\frac{\proves \axiomatic {A \wedge b} {c}
+  {b \implies (A \wedge b) \wedge \neg b \implies (A \wedge \neg b))}}
+{\proves \axiomatic
+  {b \implies (A \wedge b) \wedge \neg b \implies (A \wedge \neg b))}
+  {\while{b}{c}} {A \wedge \neg b}}
+\]
+Let us consider the expression 
+\[
+b \implies (A \wedge b) \wedge \neg b \implies (A \wedge \neg b))
+\]
+By the definition of implication, this is equivalent to.
+\[
+(\neg b \vee (A \wedge b)) \wedge (b \vee (A \wedge \neg b)))
+\]
+We can distribute here to get
+\[
+(\neg b \vee A) \wedge (\neg b \vee b) \wedge (b \vee A) \wedge (\neg b \vee b)
+\]
+The $\neg b \vee b$s are vacuously true, so we can remove them.  That leaves us
+with:
+\[
+(\neg b \vee A) \wedge (b \vee A)
+\]
+which we can cancel away to get just $A$.  Using this simplification, we can
+rewrite our new rule as:
+\[
+\frac{\proves \axiomatic{A \wedge b}{c}{A}}
+{\proves \axiomatic{A}{\while{b}{c}}{A \wedge \neg b}}
+\]
+
+But this is exactly the same as our old rule! Thus the we can use our new rule
+in place of the old.
 
 
-\problem{Consider the following alternate Hoare rule for $while$:
+ \problem{Consider the following alternate Hoare rule for
+$while$:
 \[
 \frac{\proves \axiomatic{A \wedge b}{c}{A}}
 {\proves \axiomatic{A}{\while{b}{c}}{A}}
