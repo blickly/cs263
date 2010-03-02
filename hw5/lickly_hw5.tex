@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage{amsmath}
+%\usepackage{fullpage}
+\usepackage{stmaryrd}
+
+\title{CS263: HW \#5}
+\author{Ben Lickly}
+\date{March 9, 2010}
+
+\newcommand{\problem}[1]
+{\subsubsection*{} %\fbox{\parbox{\textwidth}{
+\vspace{-16pt} \section{} \vspace{-22pt} \qquad
+#1%}}
+\bigskip \bigskip
+}
+
+\newcommand{\while}[2]{\operatorname{while}\, #1\ \operatorname{do}\ #2}
+\newcommand{\ifthen}[3]{\operatorname{if}\, #1\ \operatorname{then}\ #2\ \operatorname{else}\ #3}
+\newcommand{\denote}[1]{\llbracket #1 \rrbracket}
+\newcommand{\proves}{\vdash}
+\newcommand{\axiomatic}[3]{\{#1\}\ #2\ \{#3\}}
+
+\begin{document}
+\maketitle
+
+\problem{In the abstract interpretation example with the factorial from
+the lecture, you can see that the analysis was rather imprecise. How can you
+improve the result of this analysis by:
+\begin{enumerate}
+  \item Changing the factorial program but not changing the analysis, and
+  \item Changing the abstract interpretation setup but without changing the
+factorial program.
+\end{enumerate}
+Give separate solutions for each of the above ways to address the problem.
+}
+
+\problem{In the lecture we have seen how to define the $\alpha$ and $\gamma$
+functions starting from an arbitrary abstraction function $\beta$. Another way to
+start is by choosing the function $\gamma$ first. Given $\gamma$, write the
+definition of $\alpha$ and prove that $\alpha$ is monotonic and forms a Gallois
+connection with $\gamma$. In the process of doing this you will realize that this
+does not work with an arbitrary $\gamma$. What are the necessary conditions that
+$\gamma$ must satisfy? Hint: My solution for $\alpha$ involves a
+greatest-lower-bound operation.
+}
+
+\end{document}
