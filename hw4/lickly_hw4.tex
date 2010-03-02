@@ -64,11 +64,15 @@ Finally, we can use the rule of consequence one more time to derive $Even$.
 \frac{\proves \axiomatic{A}{c}{b \implies A \wedge \neg b \implies B}}
 {\proves \axiomatic{b \implies A \wedge \neg b \implies B}{\while{b}{c}}{B}}
 \]
-    Show that the system of axioms remains complete if we replace the old
+Show that the system of axioms remains complete if we replace the old
 rule for while with this one. You must show that any derivation that uses
 the old rule for while can be written with this rule instead.
 }
 
+\[
+\frac{\proves \axiomatic{A}{c}{b \implies A \wedge \neg b \implies B}}
+{\proves \axiomatic{b \implies A \wedge \neg b \implies B}{\while{b}{c}}{B}}
+\]
 
 
 \problem{Consider the following alternate Hoare rule for $while$:
