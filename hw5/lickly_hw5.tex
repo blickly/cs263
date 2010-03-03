@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{amsmath}
+\usepackage{amsthm}
 %\usepackage{fullpage}
 \usepackage{stmaryrd}
 
@@ -19,6 +20,9 @@
 \newcommand{\denote}[1]{\llbracket #1 \rrbracket}
 \newcommand{\proves}{\vdash}
 \newcommand{\axiomatic}[3]{\{#1\}\ #2\ \{#3\}}
+\newcommand{\meet}{\bigwedge}
+\newcommand{\powerset}{\mathcal{P}}
+\newcommand{\glb}{\operatorname{glb}}
 
 \begin{document}
 \maketitle
@@ -43,5 +47,64 @@ does not work with an arbitrary $\gamma$. What are the necessary conditions that
 $\gamma$ must satisfy? Hint: My solution for $\alpha$ involves a
 greatest-lower-bound operation.
 }
+
+Clearly, in order to satisfy the first requirement of a Gallios connection,
+$\gamma$ must be monotonic.  It also turns out that the converse is also true. 
+Taken together, these require the following restriction of
+$\gamma : Abs \to \powerset(C)$
+\[
+\forall n, m \in Abs, n \le m \iff \gamma(n) \subseteq \gamma(m)
+\]
+
+Then we can define $\alpha : \powerset(C) \to Abs$ as follows:
+\[
+\alpha(S) =  \glb \left\{ a | \gamma(a) \supseteq S \right\}
+\]
+
+Claim: This definition of $\alpha$ forms a Gallios connection with $\gamma$.
+\begin{proof}
+Let $\gamma$ be an arbitrary function satifying our constraints, and $\alpha$
+be as in our definition.
+
+Subclaim 1: $\alpha$ and $\gamma$ are monotonic
+\begin{proof}
+$\gamma$ is monotonic trivially by our restriction, so we only need to prove
+that $\alpha$ is monotonic.
+Given $S_1 \subseteq S_2 \subseteq \powerset(C)$, clearly
+$S' \supseteq S_2 \implies S' \supseteq S_1$.
+Thus, 
+$
+\left\{ a | \gamma(a) \supseteq S_2 \right\} \supseteq \left\{ a | \gamma(a)
+\supseteq S_1 \right\}.
+$
+ Thus,
+$\gamma(S_2) \supseteq \gamma(S_1)$.
+\end{proof}
+
+Subclaim 2: $\alpha(\gamma(a)) = a$ for all $a \in Abs$
+\begin{proof}
+First, choose an arbitrary $a \in Abs$.
+By the definitions of $\alpha$ and $\gamma$, we have that
+\[
+\alpha(\gamma(a)) = \glb \left\{ b | \gamma(b) \supseteq \gamma(a) \right\}
+\]
+By our restriction on $\gamma$, this is the same as:
+\[
+\glb \left\{ b | b \ge a \right\}
+\]
+But since $Abs$ is a lattice, this is the same as $a$.
+\end{proof}
+
+Subclaim 3: $\gamma(\alpha(S)) \supseteq S$ for all $S \in \powerset(C)$
+\begin{proof}
+Let $S$ be an arbitrary subset of $C$.
+By our definitions of $\alpha$ and $\gamma$, we have
+\[
+\gamma(\alpha(S)) =  \gamma( \glb \left\{ a | \gamma(a) \supseteq S \right\} )
+\]
+% FIXME: I don't even know where to continue from here!!
+\end{proof}
+
+\end{proof}
 
 \end{document}
