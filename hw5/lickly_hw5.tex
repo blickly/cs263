@@ -3,6 +3,9 @@
 \usepackage{amsthm}
 %\usepackage{fullpage}
 \usepackage{stmaryrd}
+\usepackage{graphicx}
+\usepackage{algorithmic}
+\usepackage{wrapfig}
 
 \title{CS263: HW \#5}
 \author{Ben Lickly}
@@ -37,6 +40,67 @@ factorial program.
 \end{enumerate}
 Give separate solutions for each of the above ways to address the problem.
 }
+
+\begin{enumerate}
+  \item One way to change the factorial program would be to restructure it so
+  that the counter variable counts up rather than down, such as in the
+  following program:
+  \begin{algorithmic}
+  \STATE $y := 1, n := 1$
+  \WHILE{$n\ne x$} %{
+    \STATE $n := n + 1$
+    \STATE $y := y * n$
+  \ENDWHILE %}
+  \end{algorithmic}
+  Since every assignment starts only with positive numbers on its
+  right-hand side, it is much easier to prove that the fixed point of $A(y)$
+  and $A(n)$ is $+$ at all program points.  In particular, we can proove that
+  the value of $y$ at program point 5 must be positive.
+  
+  \newpage
+  \newcommand{\nonneg}{\ge\!\!0}
+  \item One way to change the abstract interpretation to get a more precise
+  result for $y$ at point 5 would be to change the lattice to the following
+  lattice:
+
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{lattice}
+  \end{center}
+
+  In this lattice, $\top$, $+$, and $\bot$ are the same as before, but $\nonneg$
+  is such that $\gamma(\nonneg) = \{ x | x \ge 0 \}$. Since that is a superset of
+  the positive integers, we must have $\nonneg \  > \  +$.
+
+  As before, we can start with $A(x) = +$, $A(y) = \top$ at point 1 of the flow
+  graph.
+  
+  At point 2 in our first iteration, we will have $A(x) = +$, $A(y) = +$.
+  %
+  At point 3, knowing that $x\ne 0$ does not help us, so we get the same
+  constraints as at point 2 (in this iteration).
+  %
+  At point 4, the multiplying $+$ by $+$ has left us with $+$, so we still have
+  $A(x) = A(y) = +$.
+  
+  After executing $x := x - 1$, we must increase the set of possible values of
+  $x$, moving its abstract value up from $+$ to $\nonneg$.
+  Thus in the second iteration, we have that $A(x) = \nonneg$, $A(y) = +$ at
+  point 2.
+  
+  In this iteration, knowing $x\ne0$ does help us.  In particular
+  $
+  \alpha(\{\sigma | \sigma \in \gamma(\nonneg) \wedge x \ne 0 \}) = +
+  $.
+  Thus, the abstract values at point 3 remain $A(x) = A(y) = +$.
+  
+  At point 5, knowing that $x==0$ does not help us in terms of our abstract
+  values, since we don't distinguish between $x=0$ and $x \ge 0$.
+  Thus we can infer the values of $A(x) = \nonneg$ and $A(y) = +$ at point 5.
+  
+  At this stage, nothing more can change, so we have reached a fixed point. 
+  Thus, we have proven that the output $y$, is positive if the program
+  terminates.
+\end{enumerate}
 
 \problem{In the lecture we have seen how to define the $\alpha$ and $\gamma$
 functions starting from an arbitrary abstraction function $\beta$. Another way to
@@ -103,6 +167,7 @@ By our definitions of $\alpha$ and $\gamma$, we have
 \gamma(\alpha(S)) =  \gamma( \glb \left\{ a | \gamma(a) \supseteq S \right\} )
 \]
 % FIXME: I don't even know where to continue from here!!
+FIXME:  Finish this proof!
 \end{proof}
 
 \end{proof}
