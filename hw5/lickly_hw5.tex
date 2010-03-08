@@ -117,13 +117,19 @@ $\gamma$ must be monotonic.  It also turns out that the converse is also true.
 Taken together, these require the following restriction of
 $\gamma : Abs \to \powerset(C)$
 \[
-\forall n, m \in Abs, n \le m \iff \gamma(n) \subseteq \gamma(m)
+\forall n, m \in Abs,\ \left( n \le m \iff \gamma(n) \subseteq \gamma(m) \right)
 \]
 
 Then we can define $\alpha : \powerset(C) \to Abs$ as follows:
 \[
 \alpha(S) =  \glb \left\{ a | \gamma(a) \supseteq S \right\}
 \]
+
+We also need the restriction that $\gamma(\glb(S)) = \bigcap \gamma'(S)$, where
+$\gamma'(S) = \{ \gamma(s) | s \in S \}$.  I'm not sure if this fact already
+follows from the previous restrictions, so to be safe I've included it.
+
+\bigskip
 
 Claim: This definition of $\alpha$ forms a Gallios connection with $\gamma$.
 \begin{proof}
@@ -166,10 +172,16 @@ By our definitions of $\alpha$ and $\gamma$, we have
 \[
 \gamma(\alpha(S)) =  \gamma( \glb \left\{ a | \gamma(a) \supseteq S \right\} )
 \]
-% FIXME: I don't even know where to continue from here!!
-FIXME:  Finish this proof!
+By our second restriction on $\gamma$, we have this equal to:
+\[
+\bigcap \{ \gamma(a) | \gamma(a) \supseteq S)
+\]
+Clearly, since all of these sets are supersets of $S$, the result must also be
+a superset of $S$.
+Thus we have proven that $\gamma(\alpha(S)) \supseteq S$.
 \end{proof}
 
+Thus we have proved all the properties of a Galios conncetion, and we are done.
 \end{proof}
 
 \end{document}
