@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+%\usepackage{fullpage}
+\usepackage{stmaryrd}
+\usepackage{graphicx}
+\usepackage{algorithmic}
+\usepackage{wrapfig}
+
+\title{CS263: HW \#6}
+\author{Ben Lickly}
+\date{March 30, 2010}
+
+\newcommand{\problem}[1]
+{\subsubsection*{} %\fbox{\parbox{\textwidth}{
+\vspace{-16pt} \section{} \vspace{-22pt} \qquad
+#1%}}
+\bigskip \bigskip
+}
+
+\newcommand{\while}[2]{\operatorname{while}\, #1\ \operatorname{do}\ #2}
+\newcommand{\ifthen}[3]{\operatorname{if}\, #1\ \operatorname{then}\ #2\ \operatorname{else}\ #3}
+\newcommand{\denote}[1]{\llbracket #1 \rrbracket}
+\newcommand{\proves}{\vdash}
+\newcommand{\axiomatic}[3]{\{#1\}\ #2\ \{#3\}}
+\newcommand{\meet}{\bigwedge}
+\newcommand{\powerset}{\mathcal{P}}
+\newcommand{\glb}{\operatorname{glb}}
+
+\begin{document}
+\maketitle
+
+\problem{Show the encoding of the predecessor function in lambda-calculus, using
+the encoding of natural numbers that we have given in class. The predecessor of 0
+should be 0. Please do not write your solution as a big mess of lambdas. Use
+intermediate functions (like we did for $add$ and $succ$) that make it easy to
+understand how your encoding works.
+}
+
+\problem{Show how you can encode lists in lambda-calculus. Show the encoding of
+$nil$ (empty list), $cons$ (prepend an element to a list), $length$ (return the
+natural number representing the length of a list), and $append$. Please keep it
+simple.
+}
+
+\problem{Show that the execution always terminates in the call-by-value
+simply-typed $\lambda$-calculus. You need to consider only variables, integer
+constants, addition, abstraction and application. If you use induction, state
+precisely on what do you induct.
+}
+
+\end{document}
