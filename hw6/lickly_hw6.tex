@@ -37,16 +37,52 @@ intermediate functions (like we did for $add$ and $succ$) that make it easy to
 understand how your encoding works.
 }
 
+For this problem, I will create a new numeric type called $newnat$ that extends
+the old natural numbers with a notion for $-1$.  The idea is then to define
+predecessor as applying the $newnat$'s successor function to $-1$ $n$ times.
+
+In the following definitions, the argument $n$ will refer to the old style of
+natural numbers and the argument $m$ will refer to the new type.
+\begin{align*}
+newneg1 = mkpair true 0 \\
+newnat n = mkpair false n \\
+oldnat m = snd m \\
+newsucc m = (fst m) (newnat 0) (newnat (succ (oldnat m))) \\
+pred n = oldnat (n newsucc newneg1)
+\end{align*}
+
 \problem{Show how you can encode lists in lambda-calculus. Show the encoding of
 $nil$ (empty list), $cons$ (prepend an element to a list), $length$ (return the
 natural number representing the length of a list), and $append$. Please keep it
 simple.
 }
 
+We can play the same trick that numbers do where a list is an object that we
+give a function and an object and it repeatedly applies the function. This
+time, however, the function will also need to look at the contents of the list,
+so it will be a two argument function rather than a one argument one.
+
+\[
+nil = 0
+\]
+
+\[
+cons x l = \lambda f \lambda s.  f x (l f s)
+\]
+
+
+\[
+length l = l (\lambda x \lambda y. succ y) 0
+\]
+
+\[
+append l1 l2 = \lambda f \lambda s. l1 f (l2 f s)
+\]
+
 \problem{Show that the execution always terminates in the call-by-value
 simply-typed $\lambda$-calculus. You need to consider only variables, integer
 constants, addition, abstraction and application. If you use induction, state
-precisely on what do you induct.
+precisely on what you induct.
 }
 
 \end{document}
