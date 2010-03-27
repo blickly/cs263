@@ -111,6 +111,23 @@ rewrite our new rule as:
 But this is exactly the same as our old rule! Thus the we can use our new rule
 in place of the old.
 
+\smallskip
+
+If we wanted to prove equivalence in the opposite direction, we could do the
+same thing, starting with the original rule and susbstituting $A' = b \implies
+A \wedge \neg b \implies B$.  This would give us:
+\[
+\frac{\proves \axiomatic{b \wedge (b \implies A \wedge \neg b \implies B)}
+  {c}{b \implies A \wedge \neg b \implies B}}
+{\proves \axiomatic{b \implies A \wedge \neg b \implies B}{\while{b}{c}}
+  {\neg b \wedge (b \implies A \wedge \neg b \implies B)}}
+\]
+This rule simplifies directly to 
+\[
+\frac{\proves \axiomatic{A}{c}{b \implies A \wedge \neg b \implies B}}
+{\proves \axiomatic{b \implies A \wedge \neg b \implies B}{\while{b}{c}}{B}}
+\]
+which is exactly our new rule.
 
  \problem{Consider the following alternate Hoare rule for
 $while$:
