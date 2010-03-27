@@ -1,0 +1,9 @@
+graph g {
+        Top [label="⊤"]
+        Nonneg [label="≥0"]
+        Pos [label="+"]
+        Bot [label="⊥"]
+        Top -- Nonneg
+        Nonneg -- Pos
+        Pos -- Bot
+}

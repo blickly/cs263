@@ -1,0 +1,187 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+%\usepackage{fullpage}
+\usepackage{stmaryrd}
+\usepackage{graphicx}
+\usepackage{algorithmic}
+\usepackage{wrapfig}
+
+\title{CS263: HW \#5}
+\author{Ben Lickly}
+\date{March 9, 2010}
+
+\newcommand{\problem}[1]
+{\subsubsection*{} %\fbox{\parbox{\textwidth}{
+\vspace{-16pt} \section{} \vspace{-22pt} \qquad
+#1%}}
+\bigskip \bigskip
+}
+
+\newcommand{\while}[2]{\operatorname{while}\, #1\ \operatorname{do}\ #2}
+\newcommand{\ifthen}[3]{\operatorname{if}\, #1\ \operatorname{then}\ #2\ \operatorname{else}\ #3}
+\newcommand{\denote}[1]{\llbracket #1 \rrbracket}
+\newcommand{\proves}{\vdash}
+\newcommand{\axiomatic}[3]{\{#1\}\ #2\ \{#3\}}
+\newcommand{\meet}{\bigwedge}
+\newcommand{\powerset}{\mathcal{P}}
+\newcommand{\glb}{\operatorname{glb}}
+
+\begin{document}
+\maketitle
+
+\problem{In the abstract interpretation example with the factorial from
+the lecture, you can see that the analysis was rather imprecise. How can you
+improve the result of this analysis by:
+\begin{enumerate}
+  \item Changing the factorial program but not changing the analysis, and
+  \item Changing the abstract interpretation setup but without changing the
+factorial program.
+\end{enumerate}
+Give separate solutions for each of the above ways to address the problem.
+}
+
+\begin{enumerate}
+  \item One way to change the factorial program would be to restructure it so
+  that the counter variable counts up rather than down, such as in the
+  following program:
+  \begin{algorithmic}
+  \STATE $y := 1, n := 1$
+  \WHILE{$n\ne x$} %{
+    \STATE $n := n + 1$
+    \STATE $y := y * n$
+  \ENDWHILE %}
+  \end{algorithmic}
+  Since every assignment starts only with positive numbers on its
+  right-hand side, it is much easier to prove that the fixed point of $A(y)$
+  and $A(n)$ is $+$ at all program points.  In particular, we can proove that
+  the value of $y$ at program point 5 must be positive.
+  
+  \newpage
+  \newcommand{\nonneg}{\ge\!\!0}
+  \item One way to change the abstract interpretation to get a more precise
+  result for $y$ at point 5 would be to change the lattice to the following
+  lattice:
+
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{lattice}
+  \end{center}
+
+  In this lattice, $\top$, $+$, and $\bot$ are the same as before, but $\nonneg$
+  is such that $\gamma(\nonneg) = \{ x | x \ge 0 \}$. Since that is a superset of
+  the positive integers, we must have $\nonneg \  > \  +$.
+
+  As before, we can start with $A(x) = +$, $A(y) = \top$ at point 1 of the flow
+  graph.
+  
+  At point 2 in our first iteration, we will have $A(x) = +$, $A(y) = +$.
+  %
+  At point 3, knowing that $x\ne 0$ does not help us, so we get the same
+  constraints as at point 2 (in this iteration).
+  %
+  At point 4, the multiplying $+$ by $+$ has left us with $+$, so we still have
+  $A(x) = A(y) = +$.
+  
+  After executing $x := x - 1$, we must increase the set of possible values of
+  $x$, moving its abstract value up from $+$ to $\nonneg$.
+  Thus in the second iteration, we have that $A(x) = \nonneg$, $A(y) = +$ at
+  point 2.
+  
+  In this iteration, knowing $x\ne0$ does help us.  In particular
+  $
+  \alpha(\{\sigma | \sigma \in \gamma(\nonneg) \wedge x \ne 0 \}) = +
+  $.
+  Thus, the abstract values at point 3 remain $A(x) = A(y) = +$.
+  
+  At point 5, knowing that $x==0$ does not help us in terms of our abstract
+  values, since we don't distinguish between $x=0$ and $x \ge 0$.
+  Thus we can infer the values of $A(x) = \nonneg$ and $A(y) = +$ at point 5.
+  
+  At this stage, nothing more can change, so we have reached a fixed point. 
+  Thus, we have proven that the output $y$, is positive if the program
+  terminates.
+\end{enumerate}
+
+\problem{In the lecture we have seen how to define the $\alpha$ and $\gamma$
+functions starting from an arbitrary abstraction function $\beta$. Another way to
+start is by choosing the function $\gamma$ first. Given $\gamma$, write the
+definition of $\alpha$ and prove that $\alpha$ is monotonic and forms a Gallois
+connection with $\gamma$. In the process of doing this you will realize that this
+does not work with an arbitrary $\gamma$. What are the necessary conditions that
+$\gamma$ must satisfy? Hint: My solution for $\alpha$ involves a
+greatest-lower-bound operation.
+}
+
+Clearly, in order to satisfy the first requirement of a Gallios connection,
+$\gamma$ must be monotonic.  It also turns out that the converse is also true. 
+Taken together, these require the following restriction of
+$\gamma : Abs \to \powerset(C)$
+\[
+\forall n, m \in Abs,\ \left( n \le m \iff \gamma(n) \subseteq \gamma(m) \right)
+\]
+
+Then we can define $\alpha : \powerset(C) \to Abs$ as follows:
+\[
+\alpha(S) =  \glb \left\{ a | \gamma(a) \supseteq S \right\}
+\]
+
+We also need the restriction that $\gamma(\glb(S)) = \bigcap \gamma'(S)$, where
+$\gamma'(S) = \{ \gamma(s) | s \in S \}$.  I'm not sure if this fact already
+follows from the previous restrictions, so to be safe I've included it.
+
+\bigskip
+
+Claim: This definition of $\alpha$ forms a Gallios connection with $\gamma$.
+\begin{proof}
+Let $\gamma$ be an arbitrary function satifying our constraints, and $\alpha$
+be as in our definition.
+
+Subclaim 1: $\alpha$ and $\gamma$ are monotonic
+\begin{proof}
+$\gamma$ is monotonic trivially by our restriction, so we only need to prove
+that $\alpha$ is monotonic.
+Given $S_1 \subseteq S_2 \subseteq \powerset(C)$, clearly
+$S' \supseteq S_2 \implies S' \supseteq S_1$.
+Thus, 
+$
+\left\{ a | \gamma(a) \supseteq S_2 \right\} \supseteq \left\{ a | \gamma(a)
+\supseteq S_1 \right\}.
+$
+ Thus,
+$\gamma(S_2) \supseteq \gamma(S_1)$.
+\end{proof}
+
+Subclaim 2: $\alpha(\gamma(a)) = a$ for all $a \in Abs$
+\begin{proof}
+First, choose an arbitrary $a \in Abs$.
+By the definitions of $\alpha$ and $\gamma$, we have that
+\[
+\alpha(\gamma(a)) = \glb \left\{ b | \gamma(b) \supseteq \gamma(a) \right\}
+\]
+By our restriction on $\gamma$, this is the same as:
+\[
+\glb \left\{ b | b \ge a \right\}
+\]
+But since $Abs$ is a lattice, this is the same as $a$.
+\end{proof}
+
+Subclaim 3: $\gamma(\alpha(S)) \supseteq S$ for all $S \in \powerset(C)$
+\begin{proof}
+Let $S$ be an arbitrary subset of $C$.
+By our definitions of $\alpha$ and $\gamma$, we have
+\[
+\gamma(\alpha(S)) =  \gamma( \glb \left\{ a | \gamma(a) \supseteq S \right\} )
+\]
+By our second restriction on $\gamma$, we have this equal to:
+\[
+\bigcap \{ \gamma(a) | \gamma(a) \supseteq S)
+\]
+Clearly, since all of these sets are supersets of $S$, the result must also be
+a superset of $S$.
+Thus we have proven that $\gamma(\alpha(S)) \supseteq S$.
+\end{proof}
+
+Thus we have proved all the properties of a Galios conncetion, and we are done.
+\end{proof}
+
+\end{document}
