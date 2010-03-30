@@ -85,4 +85,70 @@ constants, addition, abstraction and application. If you use induction, state
 precisely on what you induct.
 }
 
+Rather than simply pove inductively that every program or program fragment will
+always terminates, we will prove a stronger property, that I will call
+\emph{strong termination}.  Informally, a program fragment that strongly
+terminates terminates with a value itself will strongly terminate if given a
+valid value.  The formal definition of strong termination will be a recursive
+definition:
+
+We say that a program fragment $e_1$ strongly terminates, or $ST(e_1)$ if
+(assuming all free variables in $e_1$ are stongly terminating), 
+$e_1$ terminates and either $e_1$ has a primitive type ($int$ or $bool$)
+or
+\[
+e : (\tau_1 \rightarrow \tau_2) \quad \text{ and }
+\quad ST(e_2: \tau_1) \implies ST(e e_2 : \tau_2)
+\]
+
+The proof that any program fragment strongly terminates in the call-by-value
+simply-typed $lamba$-calculus will be on the structure of the typing judgement,
+just like the definition of strong termination itself.
+
+Here our base case will be constants, such as integer constants.
+By our definition of $ST$, it is clear that $ST(a)$ for any primitive constant:
+\[
+\frac{}{ST(a)}
+\]
+
+Since we have assumed that all free variables are also strongly terminating, we
+get the case of variables similarly.  We will need to make sure in the
+abstraction case that any variable introduced can be guarnateed to be strongly
+terminating.
+\[
+\frac{}{ST(x)}
+\]
+
+In the case of addition, we know that the result is an integer, which is a
+primitive type.  Thus, to proove strong termination, all we need to proove is
+reular termination. Here, we can simply use our induction hypothesis
+to break the typing judgement into smaller peices, since the sum of two halting
+expressions will always halt:
+\[
+\frac{ST(e_1) \qquad ST(e_1)}
+{ST(e_1 + e_2)}
+\]
+
+In the case of abstraction, we use the induction hypothesis to first prove that
+the body of the function strongly terminates.  This requires that all the free
+variables of $e$ be strongly terminating.  This is directly dependent on the
+argument to this function being strongly terminating.  But that is exactly what
+the definition of strong termination requires.
+\[
+\frac{ST(e)}
+{\lambda x:\tau_1. e \Downarrow \lambda x:\tau_1. e
+\ \wedge\ ST(\lambda x:\tau_1.e) }
+\]
+
+In the  case of application, we use our induction hypothesis twice.  We can
+then rely on the properties of strong termination to know that the application
+of two strongly terminating values will terminate to a strongly terminating
+value.
+\[
+\frac{ST(e_1)\ \wedge\ e_1 \Downarrow \lambda x:\tau_2. e_1'
+\qquad
+ST(e_2)\ \wedge\ e_2 \Downarrow v_2 }
+{e_1 e_2 \Downarrow [v_2/x]e_1' \ \wedge\ ST(e_1 e_2)}
+\]
+
 \end{document}
