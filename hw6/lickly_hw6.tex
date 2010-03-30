@@ -43,12 +43,23 @@ predecessor as applying the $newnat$'s successor function to $-1$ $n$ times.
 
 In the following definitions, the argument $n$ will refer to the old style of
 natural numbers and the argument $m$ will refer to the new type.
+\newcommand{\true}{\operatorname{true}}
+\newcommand{\false}{\operatorname{false}}
+\newcommand{\mkpair}{\operatorname{mkpair}}
+\newcommand{\fst}{\operatorname{fst}}
+\newcommand{\snd}{\operatorname{snd}}
+\newcommand{\newnat}{\operatorname{newnat}}
+\newcommand{\oldnat}{\operatorname{oldnat}}
+\newcommand{\newnegone}{\operatorname{newneg1}}
+\newcommand{\newsucc}{\operatorname{newsucc}}
+\newcommand{\succe}{\operatorname{succ}}
+\newcommand{\pred}{\operatorname{pred}}
 \begin{align*}
-newneg1 = mkpair true 0 \\
-newnat n = mkpair false n \\
-oldnat m = snd m \\
-newsucc m = (fst m) (newnat 0) (newnat (succ (oldnat m))) \\
-pred n = oldnat (n newsucc newneg1)
+\newnegone = \mkpair \true 0 \\
+\newnat n = \mkpair \false n \\
+\oldnat m = \snd m \\
+\newsucc m = (\fst m) (\newnat 0) (\newnat (\succe (\oldnat m))) \\
+\pred n = \oldnat (n \newsucc \newnegone)
 \end{align*}
 
 \problem{Show how you can encode lists in lambda-calculus. Show the encoding of
@@ -62,21 +73,25 @@ give a function and an object and it repeatedly applies the function. This
 time, however, the function will also need to look at the contents of the list,
 so it will be a two argument function rather than a one argument one.
 
+\newcommand{\nil}{\operatorname{nil}}
+\newcommand{\cons}{\operatorname{cons}}
+\newcommand{\length}{\operatorname{length}}
+\newcommand{\append}{\operatorname{append}}
 \[
-nil = 0
+\nil = 0
 \]
 
 \[
-cons x l = \lambda f \lambda s.  f x (l f s)
+\cons x l = \lambda f \lambda s.  f x (l f s)
 \]
 
 
 \[
-length l = l (\lambda x \lambda y. succ y) 0
+\length l = l (\lambda x \lambda y. \succe y) 0
 \]
 
 \[
-append l1 l2 = \lambda f \lambda s. l1 f (l2 f s)
+\append l_1 l_2 = \lambda f \lambda s. l_1 f (l_2 f s)
 \]
 
 \problem{Show that the execution always terminates in the call-by-value
@@ -97,7 +112,7 @@ $e_1$ terminates and either $e_1$ has a primitive type ($int$ or $bool$)
 or
 \[
 e : (\tau_1 \to \tau_2) \quad \text{ and }
-\quad ST(e_2: \tau_1) \implies ST(e e_2 : \tau_2)
+\quad ST(e_2: \tau_1) \implies ST(e_1 e_2 : \tau_2)
 \]
 
 The proof that any program fragment strongly terminates in the call-by-value
@@ -135,8 +150,8 @@ terminates is exactly the assumption provided for in the definition of strong
 termination.
 \[
 \frac{ST(x) \implies ST(e)}
-{\lambda x:\tau_1. e \Downarrow \lambda x:\tau_1. e
-\ \wedge\ ST(\lambda x:\tau_1.e) }
+{%\lambda x:\tau_1. e \Downarrow \lambda x:\tau_1. e\ \wedge\ 
+ST(\lambda x:\tau_1.e) }
 \]
 
 In the  case of application, we use our induction hypothesis twice.  We can
@@ -144,10 +159,12 @@ then rely on the properties of strong termination to know that the application
 of two strongly terminating values will terminate to a strongly terminating
 value.
 \[
-\frac{ST(e_1)\ \wedge\ e_1 \Downarrow \lambda x:\tau_2. e_1'
+\frac{ST(e_1)%\ \wedge\ e_1 \Downarrow \lambda x:\tau_2. e_1'
 \qquad
-ST(e_2)\ \wedge\ e_2 \Downarrow v_2 }
-{e_1 e_2 \Downarrow [v_2/x]e_1' \ \wedge\ ST(e_1 e_2)}
+ST(e_2)%\ \wedge\ e_2 \Downarrow v_2 
+}
+{%e_1 e_2 \Downarrow [v_2/x]e_1' \ \wedge\ 
+ST(e_1 e_2)}
 \]
 
 \end{document}
