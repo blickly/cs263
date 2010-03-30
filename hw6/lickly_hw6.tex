@@ -92,8 +92,7 @@ terminates terminates with a value itself will strongly terminate if given a
 valid value.  The formal definition of strong termination will be a recursive
 definition:
 
-We say that a program fragment $e_1$ strongly terminates, or $ST(e_1)$ if
-(assuming all free variables in $e_1$ are stongly terminating), 
+We say that a program fragment $e_1$ strongly terminates, or $ST(e_1)$, if
 $e_1$ terminates and either $e_1$ has a primitive type ($int$ or $bool$)
 or
 \[
@@ -111,18 +110,15 @@ By our definition of $ST$, it is clear that $ST(a)$ for any primitive constant:
 \frac{}{ST(a)}
 \]
 
-Since we have assumed that all free variables are also strongly terminating, we
-get the case of variables similarly.  We will need to make sure in the
-abstraction case that any variable introduced can be guarnateed to be strongly
-terminating.
-\[
-\frac{}{ST(x)}
-\]
+Since a free variable cannot be run at all, we cannot say whether a variable
+by itself will terminate.  We will deal with the variables in the program by 
+making an assumption that they terminate when they are introduced in the
+abstraction rule.
 
 In the case of addition, we know that the result is an integer, which is a
-primitive type.  Thus, to proove strong termination, all we need to proove is
-reular termination. Here, we can simply use our induction hypothesis
-to break the typing judgement into smaller peices, since the sum of two halting
+primitive type.  Thus, to prove strong termination, all we need to prove is
+regular termination. Here, we can simply use our induction hypothesis
+to break the typing judgement into smaller pieces, since the sum of two halting
 expressions will always halt:
 \[
 \frac{ST(e_1) \qquad ST(e_1)}
@@ -130,12 +126,15 @@ expressions will always halt:
 \]
 
 In the case of abstraction, we use the induction hypothesis to first prove that
-the body of the function strongly terminates.  This requires that all the free
-variables of $e$ be strongly terminating.  This is directly dependent on the
-argument to this function being strongly terminating.  But that is exactly what
-the definition of strong termination requires.
+the body of the function strongly terminates.  For this sub-derivation, we can
+use the assumption that the variable introduced in this abstraction strongly
+terminates.  We will need that assumption, since we don't have any separate
+rule for proving that variables strongly terminate.
+Note that this assumption that the argument to the resulting lambda expression
+terminates is exactly the assumption provided for in the definition of strong
+termination.
 \[
-\frac{ST(e)}
+\frac{ST(x) \implies ST(e)}
 {\lambda x:\tau_1. e \Downarrow \lambda x:\tau_1. e
 \ \wedge\ ST(\lambda x:\tau_1.e) }
 \]
