@@ -65,4 +65,20 @@ we can say that $T_2 \le T_1 \implies T_1 cont \le T_2 cont$.
 In the general case, however, we can not say that continuations are either
 covariant or contravariant.
 
+\problem{
+{\bf Theorem 1} For all $e$ and $\tau$ , if $\proves e:\tau$ then
+$\proves_0 e:\tau$.
+}
+
+We will prove this on the structure of the expression, $e$.
+
+The base cases here are when $e$ is a constant or variable.
+
+Base Case 1:  $e$ is a constant.
+
+This case seems to violate the theorem.  For example, we can get
+$\proves 1 : real$, but we can't seem to prove that $\proves_0 1 : real$.
+
+Thus, we have found a counterexample that refutes our theorem.
+
 \end{document}
