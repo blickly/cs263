@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+%\usepackage{fullpage}
+\usepackage{stmaryrd}
+\usepackage{graphicx}
+\usepackage{algorithmic}
+\usepackage{wrapfig}
+
+\title{CS263: HW \#7}
+\author{Ben Lickly}
+\date{April 13, 2010}
+
+\newcommand{\problem}[1]
+{\subsubsection*{} %\fbox{\parbox{\textwidth}{
+\vspace{-16pt} \section{} \vspace{-22pt} \qquad
+#1%}}
+\bigskip \bigskip
+}
+
+\newcommand{\while}[2]{\operatorname{while}\, #1\ \operatorname{do}\ #2}
+\newcommand{\ifthen}[3]{\operatorname{if}\, #1\ \operatorname{then}\ #2\ \operatorname{else}\ #3}
+\newcommand{\denote}[1]{\llbracket #1 \rrbracket}
+\newcommand{\proves}{\vdash}
+\newcommand{\axiomatic}[3]{\{#1\}\ #2\ \{#3\}}
+\newcommand{\meet}{\bigwedge}
+\newcommand{\powerset}{\mathcal{P}}
+\newcommand{\glb}{\operatorname{glb}}
+
+\begin{document}
+\maketitle
+
+\problem{What is the type of the combinators $K$ and $S$ in the polymorphic
+lambda calculus $F_2$ ? Argue that the combinator $D$ does not have a type in
+$F_2$.
+}
+
+The $K$ combinator is the unique function (in the pure $F_2$
+lambda calulus) with type
+$\Lambda t_1. \Lambda t_2. t_1 \to t_2 \to t_1$.
+
+The $S$ combinator has type
+$\Lambda t_1. \Lambda t_2. \Lambda t_3.
+(t_1 \to t_2 \to t_3) \to (t_1 \to t_2) \to t_1 \to t_3$
+
+The $D$ combinator can not have a type because it would need to satisfy the
+equation $t(t) = t$.  We may think naively that the type $\Lambda t. t \to t$
+would work here, but this allows any $t$, whereas we need to restrict ourselves
+only to function types (whose argument and return are both function types whose
+argument and return are \dots).  We may then try
+$\Lambda t. (t \to t) \to (t \to t)$, but we will run into the same problem one
+level deeper.  It turns out that no finite $F_2$ type expression can express
+the need that there are functions ``all the way down''.
+
+\problem{What would be a good subtyping rule for continuations?  That is, under
+what conditions it is sound to say that $T_1 cont \le T_2 cont$.
+}
+
+If a program only uses $callcc$, then it's continuations are covariant and we
+can say that $T_1 \le T_2 \implies T_1 cont \le T_2 cont$.
+
+If a program only uses $throw$, then it's continuations are contravariant, and
+we can say that $T_2 \le T_1 \implies T_1 cont \le T_2 cont$.
+
+In the general case, however, we can not say that continuations are either
+covariant or contravariant.
+
+\end{document}
