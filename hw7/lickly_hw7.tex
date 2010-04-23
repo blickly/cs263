@@ -56,11 +56,11 @@ the need that there are functions ``all the way down''.
 what conditions it is sound to say that $T_1 cont \le T_2 cont$.
 }
 
-If a program only uses $callcc$, then it's continuations are covariant and we
-can say that $T_1 \le T_2 \implies T_1 cont \le T_2 cont$.
+If a program fragment only uses $callcc$, then its uses of continuations are
+covariant and we can say that $T_1 \le T_2 \implies T_1 cont \le T_2 cont$.
 
-If a program only uses $throw$, then it's continuations are contravariant, and
-we can say that $T_2 \le T_1 \implies T_1 cont \le T_2 cont$.
+If a program fragment only uses $throw$, then its uses of continuations are
+contravariant and we can say that $T_2 \le T_1 \implies T_1 cont \le T_2 cont$.
 
 In the general case, however, we can not say that continuations are either
 covariant or contravariant.
@@ -70,7 +70,7 @@ covariant or contravariant.
 $\proves_0 e:\tau$.
 }
 
-We will prove this on the structure of the expression, $e$.
+We will try to prove this on the structure of the expression, $e$.
 
 The base cases here are when $e$ is a constant or variable.
 
@@ -79,6 +79,18 @@ Base Case 1:  $e$ is a constant.
 This case seems to violate the theorem.  For example, we can get
 $\proves 1 : real$, but we can't seem to prove that $\proves_0 1 : real$.
 
-Thus, we have found a counterexample that refutes our theorem.
+Thus, we have found a counterexample that refutes our theorem.  \qed
+
+\medskip
+
+Even if we try to correct (or ignore) this problem with constants, it seems
+that the theorem still does not hold in the case of lambda expressions,
+since our new rule only applies to variables.
+
+For example, we have $\proves (\lambda x_{:real} . x) : (int \to real)$,
+by first proving a type of $real \to real$ and then using subsumption.
+We cannot prove the equivalent judgement with our new rule, however:
+\[\proves_0 (\lambda x_{:real}. x) : (int \to real)\]
+This is not true, since our new rule only applies to variables.
 
 \end{document}
