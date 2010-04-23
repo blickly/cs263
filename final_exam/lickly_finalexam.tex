@@ -26,7 +26,10 @@
 \newcommand{\meet}{\bigwedge}
 \newcommand{\powerset}{\mathcal{P}}
 \newcommand{\glb}{\operatorname{glb}}
+
+% New language commands
 \newcommand{\dood}[1]{\operatorname{do}\, #1\ \operatorname{od}}
+\newcommand{\callP}{\operatorname{call} P}
 \newcommand{\localin}[2]{\operatorname{local}\, #1\ \operatorname{in}\ #2}
 
 \begin{document}
@@ -37,6 +40,11 @@
 \begin{enumerate}
   \item Static Semantics
 
+    Since we can distinguish the types of all expressions syntactically, we can
+    actually break all typing judgements into three types: integer expressions,
+    boolean expressions, and commands.  We will use the symbols
+    $\proves_{int}$,$\proves_{bool}$, and $\proves_{com}$, for these,
+    respectively.
 \subsection*{Integers}
 \[\frac{}
 {\Gamma \proves_{int} n}
@@ -86,13 +94,83 @@
 {\Gamma \proves_{com} \dood{e \rightarrow c}}
 \]
 \[\frac{}
-{\Gamma \proves_{com} \operatorname{call} P}
+{\Gamma \proves_{com} \callP }
 \]
 \[\frac{\Gamma,x \proves_{com} c}
 {\Gamma \proves_{com} \localin{x}{c}}
 \]
 
   \item Dynamic Semantics
+\newcommand{\bigstep}[3]{\langle #1, #2 \rangle \Downarrow #3}
+\newcommand{\smallstep}[4]{\langle #1, #2 \rangle \rightarrow \langle #3, #4 \rangle}
+
+    For the operational semantics, we first need to formalize the notion of
+    state.  We will use states that are mappings from labels to integers. We also note that the intial state may have an arbitrary mapping for $g$.  i.e. For any $n$, we may have $\sigma_0(g) = n$.
+\subsection*{Expressions}
+\[\frac{}
+{\bigstep{n}{\sigma}{ n}}
+\]
+\[\frac{}
+{\bigstep{x}{\sigma}{\sigma(x)}}
+\]
+\[\frac{\bigstep{e_1}{\sigma}{n_1} \qquad \bigstep{e_2}{\sigma}{n_2}}
+{\bigstep{e_1 + e_2}{\sigma}{n_1 + n_2}}
+\]
+\[\frac{\bigstep{e_1}{\sigma}{n_1} \qquad \bigstep{e_2}{\sigma}{n_2}}
+{\bigstep{e_1 * e_2}{\sigma}{n_1 * n_2}}
+\]
+
+\[\frac{}
+{\bigstep{true}{\sigma}{true}}
+\]
+\[\frac{}
+{\bigstep{false}{\sigma}{false}}
+\]
+\[\frac{\bigstep{e}{\sigma}{0}}
+{\bigstep{e = 0}{\sigma}{ true }}
+\]
+\[\frac{\bigstep{e}{\sigma}{n} \qquad n \ne 0}
+{\bigstep{e = 0}{\sigma}{false}}
+\]
+\[\frac{\bigstep{e}{\sigma}{n} \qquad n \ge 0}
+{\bigstep{e \ge 0}{\sigma}{true}}
+\]
+\[\frac{\bigstep{e}{\sigma}{n} \qquad n < 0}
+{\bigstep{e \ge 0}{\sigma}{false}}
+\]
+
+
+\subsection*{Commands}
+% FIXME: Define contexts and redexes
+\[\frac{}
+{\smallstep{skip;c}{\sigma}{c}{\sigma}}
+\]
+\[\frac{\bigstep{e}{\sigma}{n}}
+{\smallstep{x := e}{\sigma}{skip}{\sigma[x \gets n]}}
+\]
+\[\frac{\bigstep{e}{\sigma}{true}}
+{\smallstep{e \rightarrow c}{\sigma}{c}{\sigma}}
+\]
+\[\frac{\bigstep{e_i}{\sigma}{true} \qquad i \in \{1,\dots,n\}}
+{\smallstep{e_1 \rightarrow c_1 \# \dots e_n \rightarrow c_n}{\sigma}{c_i}{\sigma}}
+\]
+\[\frac{\bigstep{e}{\sigma}{false}}
+{\smallstep{\dood{e}{c}}{\sigma}{skip}{\sigma}}
+\]
+\[\frac{\bigstep{e}{\sigma}{true}}
+{\smallstep{\dood{e}{c}}{\sigma}{c;\dood{e}{c}}{\sigma}}
+\]
+\[\frac{}
+{\smallstep{\callP}{\sigma}{c_P}{\sigma}}
+\]
+%FIXME: Where are the contexts and redexes?
+\[\frac{x \in \sigma}
+{\smallstep{\localin{x}{c}}{\sigma}{c; x := \sigma(x) }{\sigma[x \gets n]}}
+\]
+\[\frac{x \not\in \sigma}
+{\smallstep{\localin{x}{c}}{\sigma}{c}{\sigma[x \gets n]}}
+\]
+
   \item Weakest Precondition
 \end{enumerate}
 
