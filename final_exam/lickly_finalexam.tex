@@ -37,15 +37,15 @@
 
 \problem{Consider the following nondeterministic language of guarded commands.
 }
-\begin{enumerate}
-  \item Static Semantics
+
+\subsection{Static Semantics}
 
     Since we can distinguish the types of all expressions syntactically, we can
     actually break all typing judgements into three types: integer expressions,
     boolean expressions, and commands.  We will use the symbols
     $\proves_{int}$,$\proves_{bool}$, and $\proves_{com}$, for these,
     respectively.
-\subsection*{Integers}
+\subsubsection*{Integers}
 \[\frac{}
 {\Gamma \proves_{int} n}
 \]
@@ -59,7 +59,7 @@
 {\Gamma \proves_{int} e_1 + e_2}
 \]
 
-\subsection*{Booleans}
+\subsubsection*{Booleans}
 \[\frac{}
 {\Gamma \proves_{bool} true}
 \]
@@ -73,7 +73,7 @@
 {\Gamma \proves_{bool} e \ge 0}
 \]
 
-\subsection*{Commands}
+\subsubsection*{Commands}
 \[\frac{}
 {\Gamma \proves_{com} skip}
 \]
@@ -100,13 +100,13 @@
 {\Gamma \proves_{com} \localin{x}{c}}
 \]
 
-  \item Dynamic Semantics
+\subsection{Dynamic Semantics}
 \newcommand{\bigstep}[3]{\langle #1, #2 \rangle \Downarrow #3}
 \newcommand{\smallstep}[4]{\langle #1, #2 \rangle \rightarrow \langle #3, #4 \rangle}
 
     For the operational semantics, we first need to formalize the notion of
     state.  We will use states that are mappings from labels to integers. We also note that the intial state may have an arbitrary mapping for $g$.  i.e. For any $n$, we may have $\sigma_0(g) = n$.
-\subsection*{Expressions}
+\subsubsection*{Expressions}
 \[\frac{}
 {\bigstep{n}{\sigma}{ n}}
 \]
@@ -140,7 +140,7 @@
 \]
 
 
-\subsection*{Commands}
+\subsubsection*{Commands}
 % FIXME: Define contexts and redexes
 \[\frac{}
 {\smallstep{skip;c}{\sigma}{c}{\sigma}}
@@ -171,7 +171,9 @@
 {\smallstep{\localin{x}{c}}{\sigma}{c}{\sigma[x \gets n]}}
 \]
 
-  \item Weakest Precondition
-\end{enumerate}
+\subsection{Weakest Precondition}
+
+\problem{Consider an arbitrary imperative language of commands $c$. What are
+the relationships between the following pairs of predicates?}
 
 \end{document}
