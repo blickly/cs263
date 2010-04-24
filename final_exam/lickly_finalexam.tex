@@ -38,6 +38,11 @@
 \problem{Consider the following nondeterministic language of guarded commands.
 }
 
+Note: In the problem statement, $\dood{e}{c}$ is referred to as an ``unusual
+construct'', although the semantics seem to be identical to that of a
+traditional while.  I hope this was an attempt at humor on the part of the
+writer and not a misinterpretation on my part.
+
 \subsection{Static Semantics}
 
     Since we can distinguish the types of all expressions syntactically, we can
@@ -175,5 +180,41 @@
 
 \problem{Consider an arbitrary imperative language of commands $c$. What are
 the relationships between the following pairs of predicates?}
+
+\problem{Consider the IMP command $c \equiv \while{b}{x := e}$.
+You will have to prove for this command soundness and completeness results for
+the verification condition.
+}
+
+Before, we do either of the proofs, let's prove some preliminary facts.
+First, the definition of a loop invariant is something that is true
+each time $b$ is executed. (Since expressions are side-effect free, it doesn't
+matter whether we check before or after $b$ is evaluated).
+Second, given a loop invariant, call it $I$, and some postcondition, call it $B$,
+let us consider what the verification condition for our command would be:
+\[
+VC(c, B) = I \wedge \left( \forall x : I \implies (b \implies [e/x]I \wedge \neg b \implies B) \right)
+\]
+
+\subsection{Soundness}
+For any choice of the loop invariant, the verification condition for this
+command is always stronger than the weakest precondition.
+\[
+\forall B \forall I : VC_I(c, B) \implies WP(c, B)
+\]
+
+\subsection{Completeness}
+There is a choice of the loop invariant for which the verification condition is
+equivalent with the weakest precondition.
+\[
+\forall B \exists I : VC_I(c, B) \Leftrightarrow WP(c, B)
+\]
+
+Since we have already proved the forward direction in the previous section, it suffices to prove
+\[
+\forall B \exists I : VC_I(c, B) \Leftarrow WP(c, B)
+\]
+
+
 
 \end{document}
