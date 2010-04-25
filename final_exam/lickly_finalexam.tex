@@ -177,6 +177,55 @@ writer and not a misinterpretation on my part.
 \]
 
 \subsection{Weakest Precondition}
+\newcommand{\weakest}[2]{\operatorname{wp}(#1, #2)}
+\[
+\weakest{skip}{B} = B
+\]
+\[
+\weakest{c_1;c_2}{B} = \weakest{c_1}{\weakest{c_2}{B}}
+\]
+\[
+\weakest{x := e}{B} = [e/x]B
+\]
+\[
+\weakest{e \to c}{B} = e \implies \weakest{c}{B}
+\]
+\[
+\weakest{e_1 \rightarrow c_1 \# \dots \# e_n \rightarrow c_n}{B}
+= \bigwedge_{i=1}^n e_i \implies \weakest{c_i}{B}
+\]
+\[
+\weakest{\localin{x}{c}}{B}
+= \forall x: \weakest{c}{B}
+\]
+
+For the looping construct and function call, we will need to define the weakest precondition in terms of a fixed point:
+% FIXME: loop and callP
+\[
+\weakest{\dood{e}{c}}{B} = \wedge_{k \ge 0} W_k
+\]
+
+If the call is not recursive, we can simply replace the call site with $c_P$, as in:
+\[
+\weakest{\callP}{B} = \weakest{c_P}{B}
+\]
+If, on the other hand, the call to $P$ is recursive, then this would be a recursive definition.  Instead, let us define finite approximations, where $Inline_i$ is defined as follows:
+\[
+Inline_i = \begin{cases}
+  false \to skip &\text{if } i=0 \\
+  [Inline_{i-1}\/\callP]c_P &\text{if } i > 0
+\end{cases}
+\]
+Now let $C(\sigma)$ be defined by the limit:
+\[
+\begin{cases}
+  false &\text{if } \exists i : \wp{Inline_i, B} = false
+  true &\text{otherwise}.
+\end{cases}
+\]
+\[
+\weakest{\callP}{B} = C
+\]
 
 \problem{Consider an arbitrary imperative language of commands $c$. What are
 the relationships between the following pairs of predicates?}
