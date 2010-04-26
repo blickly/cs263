@@ -46,7 +46,7 @@ writer and not a misinterpretation on my part.
 \subsection{Static Semantics}
 
     Since we can distinguish the types of all expressions syntactically, we can
-    actually break all typing judgements into three types: integer expressions,
+    actually break all typing judgments into three types: integer expressions,
     boolean expressions, and commands.  We will use the symbols
     $\proves_{int}$,$\proves_{bool}$, and $\proves_{com}$, for these,
     respectively.
@@ -110,7 +110,7 @@ writer and not a misinterpretation on my part.
 \newcommand{\smallstep}[4]{\langle #1, #2 \rangle \rightarrow \langle #3, #4 \rangle}
 
     For the operational semantics, we first need to formalize the notion of
-    state.  We will use states that are mappings from labels to integers. We also note that the intial state may have an arbitrary mapping for $g$.  i.e. For any $n$, we may have $\sigma_0(g) = n$.
+    state.  We will use states that are mappings from labels to integers. We also note that the initial state may have an arbitrary mapping for $g$.  i.e. For any $n$, we may have $\sigma_0(g) = n$.
 \subsubsection*{Expressions}
 \[\frac{}
 {\bigstep{n}{\sigma}{ n}}
